@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
 
@@ -44,5 +44,14 @@ next-env.d.ts
 # IDE
 .vscode/settings.json
 .idea
+
+# Strapi
+.cache/
+.tmp/
+*.db
+*.db-shm
+*.db-wal
+build/
+dist/
 
 /app/generated/prisma
