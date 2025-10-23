@@ -8,6 +8,13 @@ describe('Home Page', () => {
     expect(heading).toBeInTheDocument();
   });
 
+  it('renders the Vercel logo', () => {
+    render(<Page />);
+    const logo = screen.getByAltText(/Vercel Logo/i);
+    expect(logo).toBeInTheDocument();
+    expect(logo).toHaveAttribute('src', '/vercel-logo.svg');
+  });
+
   it('renders the subtitle', () => {
     render(<Page />);
     expect(screen.getByText(/Next.js Full-Stack Template/i)).toBeInTheDocument();
