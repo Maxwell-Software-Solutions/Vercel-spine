@@ -45,6 +45,12 @@ pnpm create next-app@latest -- --typescript --use-pnpm --app
 
 If you started with npm, remove `package-lock.json` and run `pnpm install`.
 
+Install TurboRepo:
+
+```powershell
+pnpm add -D turbo
+```
+
 Create `pnpm-workspace.yaml` at repo root:
 
 ```yaml
@@ -58,24 +64,46 @@ Root `package.json` (add/adjust scripts):
 ```json
 {
   "private": true,
+  "name": "vercel-spine",
+  "version": "1.0.0",
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
+    "format": "prettier --write .",
     "test": "turbo run test",
     "test:all": "pnpm test:unit && pnpm test:e2e && pnpm test:perf",
     "test:unit": "jest --coverage --ci",
+    "test:unit:watch": "jest --watch",
     "test:e2e": "playwright test",
-    "test:perf": "lhci autorun"
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui",
+    "test:perf": "lhci autorun",
+    "plop": "plop",
+    "generate": "plop",
+    "generate:component": "plop component",
+    "generate:resolver": "plop resolver",
+    "generate:api": "plop api-route",
+    "generate:e2e": "plop e2e-test"
+  },
+  "devDependencies": {
+    "turbo": "latest"
   }
 }
 ```
 
 **Key Script Explanation:**
+
+- `dev` — Start development servers (via TurboRepo)
+- `build` — Build all packages/apps
+- `lint` — Run ESLint across all packages
+- `format` — Format code with Prettier
 - `test:all` — Unified command that runs all tests sequentially (unit → E2E → performance)
 - `test:unit` — Jest with coverage reporting and CI mode
 - `test:e2e` — Playwright end-to-end tests
 - `test:perf` — Lighthouse CI performance audits
+- `generate` — Interactive Plop code generator
+- `generate:*` — Direct shortcuts to specific generators
 
 Create `turbo.json`:
 
@@ -92,8 +120,10 @@ Create `turbo.json`:
 ```
 
 Verification:
+
 - `pnpm install` should produce `pnpm-lock.yaml`
 - `pnpm dev` should start Next dev server
+- Check that `turbo` is listed in `devDependencies`
 
 ---
 
@@ -541,11 +571,29 @@ pnpm add @prisma/client
 pnpm prisma init --datasource-provider postgresql
 ```
 
-In `.env.example` add:
+Create `.env.example` at repo root with all required variables:
 
+```env
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/vercel_spine?schema=public
+
+# NextAuth
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-key-here-generate-with-openssl
+
+# OAuth Providers (GitHub example)
+GITHUB_ID=your-github-oauth-app-id
+GITHUB_SECRET=your-github-oauth-app-secret
+
+# Optional: Email provider (if using email authentication)
+# EMAIL_FROM=noreply@yourdomain.com
+# SMTP_HOST=smtp.sendgrid.net
+# SMTP_PORT=587
+# SMTP_USER=apikey
+# SMTP_PASSWORD=your-sendgrid-api-key
 ```
-DATABASE_URL=postgresql://<user>:<password>@<host>/<db>?schema=public
-```
+
+**Note:** Copy `.env.example` to `.env` locally and fill in actual values. Never commit `.env` to git.
 
 Example `prisma/schema.prisma` models:
 
@@ -592,21 +640,97 @@ Run `pnpm prisma generate` and `pnpm prisma db push` (or `migrate`) as needed.
 
 ---
 
-## 6) GraphQL: Apollo Server + Apollo Client
+## 7) GraphQL: Apollo Server + Apollo Client
 
-Install:
+Install dependencies:
 
 ```powershell
+# Client-side GraphQL
 pnpm add @apollo/client graphql
-pnpm add -D @apollo/server graphql
+
+# Server-side GraphQL
+pnpm add @apollo/server @as-integrations/next
+
+# Next.js App Router support
+pnpm add @apollo/experimental-nextjs-app-support
+
+# Type generation (optional but recommended)
+pnpm add -D @graphql-codegen/cli @graphql-codegen/typescript
 ```
 
 Create GraphQL schema and resolvers under `lib/graphql/`:
 
-- `lib/graphql/typeDefs.ts` — GraphQL SDL for `Message`, `User`, queries, mutations
-- `lib/graphql/resolvers.ts` — resolver functions using `prisma` from `lib/db`
+**`lib/graphql/typeDefs.ts`:**
 
-Example `app/api/graphql/route.ts` (Next.js App Router route handler):
+```ts
+export const typeDefs = `#graphql
+  type User {
+    id: ID!
+    email: String!
+    name: String
+    messages: [Message!]!
+  }
+
+  type Message {
+    id: ID!
+    text: String!
+    createdAt: String!
+    author: User
+    authorId: String
+  }
+
+  type Query {
+    messages: [Message!]!
+    message(id: ID!): Message
+    users: [User!]!
+  }
+
+  type Mutation {
+    createMessage(text: String!, authorId: ID): Message!
+    deleteMessage(id: ID!): Boolean!
+  }
+`;
+```
+
+**`lib/graphql/resolvers.ts`:**
+
+```ts
+import { prisma } from '@/lib/db';
+
+export const resolvers = {
+  Query: {
+    messages: async () => {
+      return await prisma.message.findMany({
+        include: { author: true },
+        orderBy: { createdAt: 'desc' },
+      });
+    },
+    message: async (_: any, { id }: { id: string }) => {
+      return await prisma.message.findUnique({
+        where: { id },
+        include: { author: true },
+      });
+    },
+    users: async () => {
+      return await prisma.user.findMany();
+    },
+  },
+  Mutation: {
+    createMessage: async (_: any, { text, authorId }: { text: string; authorId?: string }) => {
+      return await prisma.message.create({
+        data: { text, authorId },
+        include: { author: true },
+      });
+    },
+    deleteMessage: async (_: any, { id }: { id: string }) => {
+      await prisma.message.delete({ where: { id } });
+      return true;
+    },
+  },
+};
+```
+
+**`app/api/graphql/route.ts`:**
 
 ```ts
 import { ApolloServer } from '@apollo/server';
@@ -614,17 +738,86 @@ import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { typeDefs } from '@/lib/graphql/typeDefs';
 import { resolvers } from '@/lib/graphql/resolvers';
 
-const server = new ApolloServer({ typeDefs, resolvers });
-export default startServerAndCreateNextHandler(server);
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  introspection: process.env.NODE_ENV !== 'production',
+});
+
+const handler = startServerAndCreateNextHandler(server);
+
+export async function GET(request: Request) {
+  return handler(request);
+}
+
+export async function POST(request: Request) {
+  return handler(request);
+}
 ```
 
-Frontend: create `lib/apolloClient.ts` and wrap client in a `Providers` client component using `ApolloProvider`.
+**Frontend Apollo Client setup - `lib/apolloClient.ts`:**
 
-Queries & Mutations: Create `graphql/queries.ts` for `GET_MESSAGES` and `CREATE_MESSAGE`.
+```ts
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
+
+export const { getClient } = registerApolloClient(() => {
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://localhost:3000/api/graphql',
+    }),
+  });
+});
+```
+
+**Client-side provider - `components/Providers.tsx`:**
+
+```ts
+'use client';
+
+import { ApolloLink, HttpLink } from '@apollo/client';
+import {
+  ApolloNextAppProvider,
+  NextSSRInMemoryCache,
+  NextSSRApolloClient,
+  SSRMultipartLink,
+} from '@apollo/experimental-nextjs-app-support/ssr';
+
+function makeClient() {
+  const httpLink = new HttpLink({
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL || 'http://localhost:3000/api/graphql',
+  });
+
+  return new NextSSRApolloClient({
+    cache: new NextSSRInMemoryCache(),
+    link:
+      typeof window === 'undefined'
+        ? ApolloLink.from([
+            new SSRMultipartLink({
+              stripDefer: true,
+            }),
+            httpLink,
+          ])
+        : httpLink,
+  });
+}
+
+export function ApolloWrapper({ children }: React.PropsWithChildren) {
+  return <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>;
+}
+```
+
+Add `NEXT_PUBLIC_GRAPHQL_URL` to `.env.example`:
+
+```env
+# GraphQL API
+NEXT_PUBLIC_GRAPHQL_URL=http://localhost:3000/api/graphql
+```
 
 ---
 
-## 7) Authentication: NextAuth.js with Prisma Adapter
+## 8) Authentication: NextAuth.js with Prisma Adapter
 
 Install:
 
@@ -649,31 +842,102 @@ Add `SessionProvider` client wrapper and include it in `app/layout.tsx` via a cl
 
 ---
 
-## 8) Playwright: E2E + Visual Feedback
+## 9) Playwright: E2E + Visual Feedback
 
-Install Playwright and initialize:
+Install Playwright:
 
 ```powershell
 pnpm add -D @playwright/test
-pnpm dlx playwright@latest install --with-deps
+pnpm dlx playwright install --with-deps
 ```
 
-Run `pnpm dlx playwright init` if you want interactive scaffolding. Create `playwright.config.ts` with:
+Create `playwright.config.ts`:
 
-- testDir: `tests/e2e`
-- use: `{ headless: true, screenshot: 'only-on-failure', video: 'retain-on-failure' }`
-- projects for chromium/webkit/firefox if desired
+```ts
+import { defineConfig, devices } from '@playwright/test';
 
-Example test `tests/e2e/message-board.spec.ts` to:
-1. Start dev server (or use `baseURL` pointing to preview URL)
-2. Navigate to `/messages`
-3. Fill form and submit
-4. Assert message appears
-5. Capture screenshot/video on failure (automated)
+export default defineConfig({
+  testDir: './tests/e2e',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: [
+    ['html'],
+    ['json', { outputFile: 'playwright-report/results.json' }],
+    ['github'], // GitHub Actions annotations
+  ],
+  use: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+  },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
+  webServer: {
+    command: 'pnpm dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+  },
+});
+```
 
-CI: upload Playwright artifacts (screenshots/videos/traces) to GitHub Actions job for review. This provides visual feedback to Copilot AI.
+Example test `tests/e2e/message-board.spec.ts`:
 
-Scripts in `package.json`:
+```ts
+import { test, expect } from '@playwright/test';
+
+test.describe('Message Board', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/messages');
+  });
+
+  test('should display message board page', async ({ page }) => {
+    await expect(page).toHaveTitle(/Messages/i);
+    await expect(page.locator('h1')).toContainText('Message Board');
+  });
+
+  test('should create a new message', async ({ page }) => {
+    const messageText = `Test message ${Date.now()}`;
+    
+    // Fill in the form
+    await page.locator('input[placeholder*="message"]').fill(messageText);
+    await page.locator('button[type="submit"]').click();
+    
+    // Wait for the message to appear
+    await expect(page.locator(`text=${messageText}`)).toBeVisible();
+    
+    // Take screenshot for visual feedback
+    await page.screenshot({ path: `tests/e2e/screenshots/message-created-${Date.now()}.png` });
+  });
+
+  test('should meet performance requirements', async ({ page }) => {
+    // This ensures page loads without errors
+    // Lighthouse CI will validate actual performance metrics
+    const startTime = Date.now();
+    await page.goto('/messages');
+    const loadTime = Date.now() - startTime;
+    
+    expect(loadTime).toBeLessThan(3000); // Basic load time check
+    await expect(page.locator('body')).toBeVisible();
+  });
+});
+```
+
+**CI Integration:** Upload Playwright artifacts (screenshots/videos/traces) to GitHub Actions for visual feedback to Copilot AI.
 
 ```json
 {
@@ -685,7 +949,7 @@ Scripts in `package.json`:
 
 ---
 
-## 9) Lighthouse CI: Performance Tracking
+## 10) Lighthouse CI: Performance Tracking
 
 Install Lighthouse CI:
 
@@ -948,3 +1212,4 @@ If any step fails, fix configs and run again. Aim to have all PASS before markin
 11. Configure CI/CD with unified test pipeline and artifact uploads
 
 If you want me to start now, I'll begin with task 1 and work through implementation systematically.
+
