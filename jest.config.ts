@@ -19,15 +19,16 @@ const config: Config = {
   ],
   coverageThreshold: {
     global: {
-      statements: 20,
-      branches: 10,
-      functions: 10,
-      lines: 20,
+      statements: 85,
+      branches: 85,
+      functions: 80,
+      lines: 85,
     },
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
+  transformIgnorePatterns: ['node_modules/(?!(@apollo|@wry)/)'],
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
   testPathIgnorePatterns: ['/node_modules/', '/.next/', '/tests/e2e/'],
   transform: {

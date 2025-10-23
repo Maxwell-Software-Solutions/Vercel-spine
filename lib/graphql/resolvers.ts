@@ -30,4 +30,12 @@ export const resolvers = {
       return true;
     },
   },
+  Message: {
+    author: async (message: any) => {
+      if (!message.authorId) return null;
+      return await prisma.user.findUnique({
+        where: { id: message.authorId },
+      });
+    },
+  },
 };

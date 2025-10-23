@@ -30,7 +30,8 @@
     "generate:component": "plop component",
     "generate:resolver": "plop resolver",
     "generate:api": "plop api-route",
-    "generate:e2e": "plop e2e-test"
+    "generate:e2e": "plop e2e-test",
+    "prepare": "husky"
   },
   "dependencies": {
     "@apollo/client": "^4.0.7",
@@ -38,10 +39,16 @@
     "@apollo/server": "^5.0.0",
     "@as-integrations/next": "^4.0.0",
     "@prisma/client": "^6.18.0",
+    "@radix-ui/react-slot": "^1.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "graphql": "^16.11.0",
+    "lucide-react": "^0.546.0",
     "next": "^14.2.0",
     "react": "^18.3.0",
-    "react-dom": "^18.3.0"
+    "react-dom": "^18.3.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@lhci/cli": "^0.13.0",
@@ -61,6 +68,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.0",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.7",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
     "plop": "^4.0.4",
