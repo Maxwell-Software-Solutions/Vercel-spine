@@ -10,7 +10,6 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "postinstall": "prisma generate",
     "test": "turbo run test",
     "test:all": "pnpm test:unit && pnpm test:e2e",
     "test:all:full": "pnpm test:unit && pnpm test:e2e && pnpm test:perf",
