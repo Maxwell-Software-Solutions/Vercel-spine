@@ -15,13 +15,7 @@ export default function Home() {
           />
           <h1 
             data-ai-id="hero-heading" 
-            className="text-4xl font-bold text-center"
-            style={{
-              background: 'linear-gradient(to right, #4B0082, #FFA500)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
+            className="text-4xl font-bold text-center gradient-text"
           >
             Vercel Spine
           </h1>
