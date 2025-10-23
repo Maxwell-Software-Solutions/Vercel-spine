@@ -32,6 +32,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Generate Prisma Client
+        run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
+
       - name: Run ESLint
         run: pnpm lint
 
@@ -58,6 +63,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
 
       - name: Run unit tests
         run: pnpm test:unit
@@ -141,6 +151,8 @@ jobs:
 
       - name: Run Lighthouse CI
         run: pnpm lighthouse
+        env:
+          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
 
       - name: Upload Lighthouse results
         uses: actions/upload-artifact@v4
