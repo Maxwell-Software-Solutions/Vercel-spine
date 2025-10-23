@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import AiInlineRequest from '@/components/AiInlineRequest';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,9 +31,15 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Only show inline AI editor when explicitly enabled
+  const showInlineAI = process.env.NEXT_PUBLIC_INLINE_AI === '1';
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        {showInlineAI && <AiInlineRequest />}
+      </body>
     </html>
   );
 }

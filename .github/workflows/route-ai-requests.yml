@@ -1,0 +1,62 @@
+name: Route AI Change Requests
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  notify-copilot:
+    # Only run when ai-change-request label is present
+    if: contains(github.event.issue.labels.*.name, 'ai-change-request')
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - name: Comment with Copilot instructions
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ## 🤖 GitHub Copilot - Please Implement
+
+            @github-copilot This is an AI-generated change request. Please:
+
+            1. **Review** the Expected Change and Screenshot above
+            2. **Locate** the component using the provided selector
+            3. **Implement** the changes according to acceptance criteria
+            4. **Test** locally (ensure no regressions)
+            5. **Open a PR** linking back to this issue (use `Fixes #${{ github.event.issue.number }}`)
+
+            ### Implementation Notes
+            - Use the selector hint: check for `data-ai-id` attributes first
+            - If screenshot shows layout, preserve spacing and alignment
+            - Run existing tests before submitting PR
+            - Consider mobile/responsive implications
+
+            ### When Done
+            - Link PR to this issue
+            - Add screenshots/preview to PR description
+            - Request review from original requester if possible
+
+            ---
+
+            _Automated by Inline AI Workflow_
+
+      - name: Add metadata labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['copilot-ready', 'enhancement']
+            });
+
+      - name: Log to Actions
+        run: |
+          echo "✅ Notified Copilot for issue #${{ github.event.issue.number }}"
+          echo "📋 Issue URL: ${{ github.event.issue.html_url }}"

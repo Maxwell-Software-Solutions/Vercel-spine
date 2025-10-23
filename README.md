@@ -55,6 +55,7 @@ pnpm test:all
 ```
 
 This command runs sequentially:
+
 1. **Jest** - Unit tests with 95% coverage requirement
 2. **Playwright** - End-to-end tests with visual feedback
 3. **Lighthouse CI** - Performance testing with 90+ score requirement
@@ -79,6 +80,7 @@ pnpm test:perf             # Run Lighthouse CI
 ### Coverage Requirements
 
 **Jest enforces 95% coverage on:**
+
 - Statements
 - Branches
 - Functions
@@ -89,12 +91,14 @@ Build **FAILS** if coverage drops below 95%.
 ### Performance Budgets
 
 **Lighthouse CI requires 90+ scores for:**
+
 - Performance
 - Accessibility
 - Best Practices
 - SEO
 
 **Core Web Vitals must meet:**
+
 - First Contentful Paint (FCP) < 2s
 - Largest Contentful Paint (LCP) < 2.5s
 - Cumulative Layout Shift (CLS) < 0.1
@@ -116,6 +120,7 @@ pnpm generate:e2e          # Playwright E2E test
 ```
 
 All generated files include:
+
 - Proper TypeScript types
 - Comprehensive test coverage
 - Best practice patterns
@@ -184,6 +189,7 @@ pnpm prisma db push
 ### Environment Variables
 
 Required:
+
 ```env
 DATABASE_URL=postgresql://...
 NEXTAUTH_SECRET=...
@@ -191,6 +197,7 @@ NEXT_PUBLIC_GRAPHQL_URL=http://localhost:3000/api/graphql
 ```
 
 Optional:
+
 ```env
 GITHUB_ID=...
 GITHUB_SECRET=...
@@ -224,16 +231,16 @@ This template is optimized for AI-assisted development:
 
 ## 🧩 Tech Stack
 
-| Category | Technology |
-|----------|-----------|
-| Framework | Next.js 14 (App Router) |
-| Language | TypeScript 5 |
-| Database | PostgreSQL + Prisma |
-| API | GraphQL (Apollo) |
-| Testing | Jest + Playwright + Lighthouse |
-| UI | Tailwind CSS + shadcn/ui |
-| Auth | NextAuth.js |
-| Tooling | pnpm + TurboRepo + Plop |
+| Category  | Technology                     |
+| --------- | ------------------------------ |
+| Framework | Next.js 14 (App Router)        |
+| Language  | TypeScript 5                   |
+| Database  | PostgreSQL + Prisma            |
+| API       | GraphQL (Apollo)               |
+| Testing   | Jest + Playwright + Lighthouse |
+| UI        | Tailwind CSS + shadcn/ui       |
+| Auth      | NextAuth.js                    |
+| Tooling   | pnpm + TurboRepo + Plop        |
 
 ## 📦 Package Scripts
 
@@ -261,7 +268,7 @@ All CI checks must pass:
 ✅ **Jest** - 95%+ coverage  
 ✅ **Playwright** - All E2E tests pass  
 ✅ **Lighthouse** - 90+ scores  
-✅ **Build** - Successful production build  
+✅ **Build** - Successful production build
 
 ## 🤝 Contributing
 
@@ -327,3 +334,170 @@ pnpm build
 ---
 
 **Built with ❤️ by Maxwell Software Solutions**
+
+---
+
+## 🤖 Inline AI Editor
+
+This project includes an admin-only inline editing tool that creates AI-structured GitHub issues for automated implementation by coding agents.
+
+### Overview
+
+The Inline AI Editor allows administrators to:
+
+1. Click any element on the live/preview site
+2. Describe desired changes in natural language
+3. Automatically generate structured, agent-ready GitHub issues with screenshots
+4. Enable GitHub Copilot (or other coding agents) to implement changes via PR
+
+### Usage
+
+**1. Enable the editor** (preview deployments only):
+
+Set the environment variable in Vercel:
+
+```bash
+NEXT_PUBLIC_INLINE_AI=1
+```
+
+**2. Create a change request**:
+
+- Open your preview site
+- Click the "Inline AI Editor" widget (bottom-right corner)
+- Click "🎯 Pick Element" and select the component you want to change
+- Describe your desired change in plain English
+- Click "🚀 Create AI Change Request"
+
+**3. Agent implements the change**:
+
+- A structured GitHub issue is automatically created with:
+  - Screenshot of the selected element
+  - AI-normalized change specification
+  - Testable acceptance criteria
+  - Risk assessment and complexity estimation
+- GitHub Copilot (or your agent) is notified via workflow
+- The agent opens a PR with the implementation
+- Review and merge!
+
+### Configuration
+
+Required environment variables for the Inline AI Editor:
+
+```bash
+# GitHub Configuration
+GITHUB_OWNER=Maxwell-Software-Solutions
+GITHUB_REPO=Vercel-spine
+GITHUB_TOKEN=ghp_xxx                    # Fine-grained PAT with repo:issues scope
+
+# AI Provider
+OPENAI_API_KEY=sk-proj-xxx              # OpenAI API key for request structuring
+
+# Vercel Blob Storage
+BLOB_READ_WRITE_TOKEN=vercel_blob_xxx   # Vercel Blob storage for screenshots
+
+# Feature Flag (client-side)
+NEXT_PUBLIC_INLINE_AI=1                 # Enable widget (set to 0 for production)
+```
+
+#### Detailed Setup Instructions
+
+**1. GitHub Token (GITHUB_TOKEN)**
+
+Create a fine-grained Personal Access Token:
+
+1. Go to [GitHub Settings → Tokens](https://github.com/settings/tokens?type=beta)
+2. Click "Generate new token"
+3. Configure:
+   - Name: `vercel-spine-inline-ai`
+   - Expiration: 90 days
+   - Repository access: Select `Vercel-spine` repository only
+   - Permissions: **Issues** → `Read and write` (only this permission needed)
+4. Generate and copy the token (starts with `ghp_`)
+5. Add to `.env.local` and Vercel environment variables
+
+**2. OpenAI API Key (OPENAI_API_KEY)**
+
+Get your API key from OpenAI:
+
+1. Go to <https://platform.openai.com/api-keys>
+2. Create new secret key named `vercel-spine-inline-ai`
+3. Copy the key (starts with `sk-proj-` or `sk-`)
+4. Set monthly budget limit (recommended: $10-20)
+5. Add to `.env.local` and Vercel environment variables
+
+**Cost**: ~$0.005 per AI request (GPT-4o), typically <$1/month for normal usage
+
+**3. Vercel Blob Storage (BLOB_READ_WRITE_TOKEN)**
+
+Enable Blob storage for screenshot hosting:
+
+1. Open your Vercel project dashboard
+2. Go to Storage tab → Create Database → Select "Blob"
+3. Name: `inline-ai-screenshots`
+4. The `BLOB_READ_WRITE_TOKEN` is auto-generated
+5. Copy token to `.env.local` for local development
+6. Token is automatically available in Preview/Production deployments
+
+**Free tier**: 1GB storage, unlimited bandwidth
+
+**4. Feature Flag (NEXT_PUBLIC_INLINE_AI)**
+
+Control widget visibility by environment:
+
+- **Production**: `NEXT_PUBLIC_INLINE_AI=0` (disabled) or omit variable
+- **Preview**: `NEXT_PUBLIC_INLINE_AI=1` (enabled for testing)
+- **Development**: `NEXT_PUBLIC_INLINE_AI=1` (enabled locally)
+
+Set separately in Vercel for each environment to keep production secure.
+
+### Best Practices
+
+- **Add stable selectors**: Use `data-ai-id` attributes on components you edit frequently:
+
+  ```tsx
+  <div data-ai-id="hero-section">
+    <h1 data-ai-id="hero-heading">Welcome</h1>
+  </div>
+  ```
+
+- **Use preview deployments**: Test changes on preview branches before production
+- **Be specific**: Provide clear, measurable descriptions (e.g., "Increase font-size to 24px" vs "make bigger")
+- **Review AI issues**: Check generated issues before assigning to agents
+- **Security**: Only enable on trusted preview deployments, never on public production
+
+### How It Works
+
+```text
+User clicks element → AI structures request → GitHub issue created →
+GitHub workflow notifies agent → Agent implements → PR opened → Review & merge
+```
+
+The system uses:
+
+- **Vercel AI SDK** for structured output generation
+- **Vercel Blob** for screenshot hosting
+- **Octokit** for GitHub API integration
+- **html-to-image** for element capture
+- **Zod** for type-safe validation
+
+### Troubleshooting
+
+**Widget not appearing:**
+
+- Check `NEXT_PUBLIC_INLINE_AI=1` in environment variables
+- Verify you're on a preview deployment (not production)
+- Clear browser cache and hard reload
+
+**Screenshot upload fails:**
+
+- Verify `BLOB_READ_WRITE_TOKEN` is set correctly
+- Ensure Vercel Blob is enabled in project settings
+- Check element is visible (not `display: none`)
+
+**GitHub issue creation fails:**
+
+- Verify `GITHUB_TOKEN` has `repo:issues` permission
+- Check token hasn't expired
+- Confirm `GITHUB_OWNER` and `GITHUB_REPO` are correct
+
+For detailed implementation guide, see [INLINE-AI-IMPLEMENTATION.md](./INLINE-AI-IMPLEMENTATION.md).
