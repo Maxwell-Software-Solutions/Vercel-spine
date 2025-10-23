@@ -3,6 +3,7 @@
   "name": "vercel-spine",
   "version": "1.0.0",
   "description": "Next.js full-stack template with GraphQL, Prisma, and comprehensive testing",
+  "packageManager": "pnpm@9.12.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
