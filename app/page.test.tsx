@@ -8,6 +8,13 @@ describe('Home Page', () => {
     expect(heading).toBeInTheDocument();
   });
 
+  it('renders the Vercel triangle', () => {
+    render(<Page />);
+    const triangle = screen.getByAltText(/Vercel Triangle/i);
+    expect(triangle).toBeInTheDocument();
+    expect(triangle).toHaveAttribute('src', '/vercel-triangle.svg');
+  });
+
   it('renders the subtitle', () => {
     render(<Page />);
     expect(screen.getByText(/Next.js Full-Stack Template/i)).toBeInTheDocument();
