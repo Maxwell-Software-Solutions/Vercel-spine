@@ -379,6 +379,32 @@ NEXT_PUBLIC_INLINE_AI=1
 - The agent opens a PR with the implementation
 - Review and merge!
 
+### PR Preview Feedback
+
+When reviewing a PR preview deployment, you can provide inline feedback that automatically links to that PR:
+
+**1. Access PR preview with PR number**:
+
+```
+https://your-preview.vercel.app/?pr=123
+```
+
+**2. Use the Inline AI Editor** as normal to create feedback
+
+**3. Automatic linking**:
+
+- Issue is tagged with `pr-preview-feedback` label
+- Issue body includes `Related PR: #123`
+- A comment is automatically posted on the PR with your feedback
+- The PR team is notified of the preview feedback
+
+**Benefits**:
+
+- Feedback captured directly on preview deployments
+- Issues automatically linked to correct PR
+- Screenshot and context preserved
+- No manual cross-referencing needed
+
 ### Configuration
 
 Required environment variables for the Inline AI Editor:

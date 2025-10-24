@@ -21,6 +21,7 @@ const InSchema = z.object({
     height: z.number().positive(),
   }),
   screenshotDataUrl: z.string().optional(),
+  prNumber: z.number().int().positive().optional(),
 });
 
 /**
@@ -175,6 +176,8 @@ Focus on:
       '**Original Description:**',
       '> ' + input.description.split('\n').join('\n> '),
       '',
+      input.prNumber ? `**Related PR:** #${input.prNumber}` : '',
+      '',
       '_Filed by Inline AI Editor_',
     ]
       .filter(Boolean)
@@ -185,7 +188,9 @@ Focus on:
       repo,
       title,
       body,
-      labels: ['ai-change-request', 'needs-review'],
+      labels: input.prNumber
+        ? ['ai-change-request', 'needs-review', 'pr-preview-feedback']
+        : ['ai-change-request', 'needs-review'],
     });
 
     console.log('GitHub issue created:', issue.data.html_url);
@@ -197,6 +202,7 @@ Focus on:
       ok: true,
       issueUrl: issue.data.html_url,
       issueNumber: issue.data.number,
+      prNumber: input.prNumber,
     });
   } catch (err: any) {
     console.error('AI change request failed:', err);

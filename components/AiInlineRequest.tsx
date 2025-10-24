@@ -90,6 +90,10 @@ export default function AiInlineRequest() {
     setBusy(true);
 
     try {
+      // Detect if viewing a PR preview (check URL params or Vercel preview env)
+      const urlParams = new URLSearchParams(window.location.search);
+      const prNumber = urlParams.get('pr') || urlParams.get('pull') || null;
+
       const res = await fetch('/api/ai-change-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -102,6 +106,7 @@ export default function AiInlineRequest() {
             height: window.innerHeight,
           },
           screenshotDataUrl: picked?.screenshotDataUrl,
+          prNumber: prNumber ? parseInt(prNumber, 10) : undefined,
         }),
       });
 
