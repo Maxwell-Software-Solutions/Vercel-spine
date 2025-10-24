@@ -52,4 +52,10 @@ describe('Home Page', () => {
     const featureCards = container.querySelectorAll('.gradient-border');
     expect(featureCards).toHaveLength(3);
   });
+
+  it('applies gradient-text-hover class to description paragraph', () => {
+    const { container } = render(<Page />);
+    const description = container.querySelector('[data-ai-id="hero-description"]');
+    expect(description).toHaveClass('gradient-text-hover');
+  });
 });
