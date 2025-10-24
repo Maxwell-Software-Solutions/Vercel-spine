@@ -26,6 +26,18 @@ body {
   color: transparent;
 }
 
+.gradient-text-hover {
+  transition: all 0.3s ease-in-out;
+}
+
+.gradient-text-hover:hover {
+  background: var(--gradient-colors);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
 .gradient-border {
   border: 2px solid transparent;
   background: linear-gradient(#fff, #fff) padding-box,
