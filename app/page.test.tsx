@@ -46,4 +46,10 @@ describe('Home Page', () => {
     expect(screen.getByText(/Plop.js generators/i)).toBeInTheDocument();
     expect(screen.getByText(/TurboRepo/i)).toBeInTheDocument();
   });
+
+  it('applies gradient-border class to feature cards', () => {
+    const { container } = render(<Page />);
+    const featureCards = container.querySelectorAll('.gradient-border');
+    expect(featureCards).toHaveLength(3);
+  });
 });

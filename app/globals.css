@@ -22,6 +22,27 @@ body {
   color: transparent;
 }
 
+.gradient-border {
+  border: 2px solid transparent;
+  background: linear-gradient(#000, #000) padding-box,
+              linear-gradient(to right, #4B0082, #FFA500) border-box;
+  border-radius: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .gradient-border {
+    background: linear-gradient(#000, #000) padding-box,
+                linear-gradient(to right, #4B0082, #FFA500) border-box;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .gradient-border {
+    background: linear-gradient(#fff, #fff) padding-box,
+                linear-gradient(to right, #4B0082, #FFA500) border-box;
+  }
+}
+
 
 
 @layer base {
