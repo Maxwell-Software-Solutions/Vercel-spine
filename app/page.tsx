@@ -1,10 +1,25 @@
+import Image from 'next/image';
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm">
-        <h1 data-ai-id="hero-heading" className="text-4xl font-bold text-center mb-8">
-          Vercel Spine
-        </h1>
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <Image 
+            src="/vercel-triangle.svg" 
+            alt="Vercel Triangle" 
+            width={40}
+            height={40}
+            className="flex-shrink-0"
+            priority
+          />
+          <h1 
+            data-ai-id="hero-heading" 
+            className="text-4xl font-bold gradient-text"
+          >
+            Vercel Spine
+          </h1>
+        </div>
         <p data-ai-id="hero-description" className="text-center text-lg mb-4">
           Next.js Full-Stack Template with GraphQL, Prisma, and Comprehensive Testing
         </p>
