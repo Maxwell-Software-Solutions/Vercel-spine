@@ -14,8 +14,12 @@ body {
   }
 }
 
+:root {
+  --gradient-colors: linear-gradient(to right, #4B0082, #FFA500);
+}
+
 .gradient-text {
-  background: linear-gradient(to right, #4B0082, #FFA500);
+  background: var(--gradient-colors);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -23,11 +27,15 @@ body {
 }
 
 .gradient-hover {
-  transition: background 0.3s ease, -webkit-background-clip 0.3s ease, background-clip 0.3s ease;
+  transition: background 0.3s ease, 
+              -webkit-background-clip 0.3s ease, 
+              background-clip 0.3s ease,
+              -webkit-text-fill-color 0.3s ease,
+              color 0.3s ease;
 }
 
 .gradient-hover:hover {
-  background: linear-gradient(to right, #4B0082, #FFA500);
+  background: var(--gradient-colors);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
