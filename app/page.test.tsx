@@ -46,4 +46,38 @@ describe('Home Page', () => {
     expect(screen.getByText(/Plop.js generators/i)).toBeInTheDocument();
     expect(screen.getByText(/TurboRepo/i)).toBeInTheDocument();
   });
+
+  it('feature titles are clickable links with correct attributes', () => {
+    render(<Page />);
+    
+    // Check Features link
+    const featuresLink = screen.getByRole('link', { name: /🚀 Features/i });
+    expect(featuresLink).toBeInTheDocument();
+    expect(featuresLink).toHaveAttribute('href', 'https://github.com/Maxwell-Software-Solutions/Vercel-spine#-features');
+    expect(featuresLink).toHaveAttribute('target', '_blank');
+    expect(featuresLink).toHaveAttribute('rel', 'noopener noreferrer');
+    
+    // Check Testing link
+    const testingLink = screen.getByRole('link', { name: /✅ Testing/i });
+    expect(testingLink).toBeInTheDocument();
+    expect(testingLink).toHaveAttribute('href', 'https://github.com/Maxwell-Software-Solutions/Vercel-spine#-testing');
+    expect(testingLink).toHaveAttribute('target', '_blank');
+    expect(testingLink).toHaveAttribute('rel', 'noopener noreferrer');
+    
+    // Check Tools link
+    const toolsLink = screen.getByRole('link', { name: /🛠️ Tools/i });
+    expect(toolsLink).toBeInTheDocument();
+    expect(toolsLink).toHaveAttribute('href', 'https://github.com/Maxwell-Software-Solutions/Vercel-spine#-code-generation-with-plop');
+    expect(toolsLink).toHaveAttribute('target', '_blank');
+    expect(toolsLink).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  it('feature links have proper focus styles for accessibility', () => {
+    render(<Page />);
+    
+    const featuresLink = screen.getByRole('link', { name: /🚀 Features/i });
+    expect(featuresLink).toHaveClass('focus:outline-none');
+    expect(featuresLink).toHaveClass('focus:ring-2');
+    expect(featuresLink).toHaveClass('focus:ring-blue-500');
+  });
 });
