@@ -4,18 +4,18 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm">
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex items-center justify-center gap-3 mb-8">
           <Image 
-            src="/vercel-logo.svg" 
-            alt="Vercel Logo" 
-            width={128}
-            height={32}
-            className="mb-4"
+            src="/vercel-triangle.svg" 
+            alt="Vercel Triangle" 
+            width={40}
+            height={40}
+            className="flex-shrink-0"
             priority
           />
           <h1 
             data-ai-id="hero-heading" 
-            className="text-4xl font-bold text-center gradient-text"
+            className="text-4xl font-bold gradient-text"
           >
             Vercel Spine
           </h1>

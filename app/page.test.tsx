@@ -8,11 +8,11 @@ describe('Home Page', () => {
     expect(heading).toBeInTheDocument();
   });
 
-  it('renders the Vercel logo', () => {
+  it('renders the Vercel triangle', () => {
     render(<Page />);
-    const logo = screen.getByAltText(/Vercel Logo/i);
-    expect(logo).toBeInTheDocument();
-    expect(logo).toHaveAttribute('src', '/vercel-logo.svg');
+    const triangle = screen.getByAltText(/Vercel Triangle/i);
+    expect(triangle).toBeInTheDocument();
+    expect(triangle).toHaveAttribute('src', '/vercel-triangle.svg');
   });
 
   it('renders the subtitle', () => {
