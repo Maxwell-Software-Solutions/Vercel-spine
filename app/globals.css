@@ -14,12 +14,30 @@ body {
   }
 }
 
+:root {
+  --gradient-colors: linear-gradient(to right, #4B0082, #FFA500);
+}
+
 .gradient-text {
-  background: linear-gradient(to right, #4B0082, #FFA500);
+  background: var(--gradient-colors);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+}
+
+.gradient-border {
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+              var(--gradient-colors) border-box;
+  border-radius: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .gradient-border {
+    background: linear-gradient(#000, #000) padding-box,
+                var(--gradient-colors) border-box;
+  }
 }
 
 

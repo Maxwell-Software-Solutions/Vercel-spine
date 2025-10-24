@@ -24,17 +24,8 @@ export default function Home() {
           Next.js Full-Stack Template with GraphQL, Prisma, and Comprehensive Testing
         </p>
         <div data-ai-id="features-section" className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-          <div data-ai-id="feature-card-features" className="p-6 border rounded-lg">
-            <h2 className="text-xl font-semibold mb-2">
-              <a 
-                href="https://github.com/Maxwell-Software-Solutions/Vercel-spine#-features"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-              >
-                🚀 Features
-              </a>
-            </h2>
+          <div data-ai-id="feature-card-features" className="p-6 gradient-border">
+            <h2 className="text-xl font-semibold mb-2">🚀 Features</h2>
             <ul className="list-disc list-inside text-sm space-y-1">
               <li>Next.js 14 App Router</li>
               <li>TypeScript</li>
@@ -42,17 +33,8 @@ export default function Home() {
               <li>GraphQL with Apollo</li>
             </ul>
           </div>
-          <div data-ai-id="feature-card-testing" className="p-6 border rounded-lg">
-            <h2 className="text-xl font-semibold mb-2">
-              <a 
-                href="https://github.com/Maxwell-Software-Solutions/Vercel-spine#-testing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-              >
-                ✅ Testing
-              </a>
-            </h2>
+          <div data-ai-id="feature-card-testing" className="p-6 gradient-border">
+            <h2 className="text-xl font-semibold mb-2">✅ Testing</h2>
             <ul className="list-disc list-inside text-sm space-y-1">
               <li>Jest (95% coverage)</li>
               <li>Playwright E2E</li>
@@ -60,17 +42,8 @@ export default function Home() {
               <li>Unified test command</li>
             </ul>
           </div>
-          <div data-ai-id="feature-card-tools" className="p-6 border rounded-lg">
-            <h2 className="text-xl font-semibold mb-2">
-              <a 
-                href="https://github.com/Maxwell-Software-Solutions/Vercel-spine#-tech-stack"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-              >
-                🛠️ Tools
-              </a>
-            </h2>
+          <div data-ai-id="feature-card-tools" className="p-6 gradient-border">
+            <h2 className="text-xl font-semibold mb-2">🛠️ Tools</h2>
             <ul className="list-disc list-inside text-sm space-y-1">
               <li>Prisma ORM</li>
               <li>NextAuth.js</li>
