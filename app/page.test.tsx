@@ -67,7 +67,7 @@ describe('Home Page', () => {
     // Check Tools link
     const toolsLink = screen.getByRole('link', { name: /🛠️ Tools/i });
     expect(toolsLink).toBeInTheDocument();
-    expect(toolsLink).toHaveAttribute('href', 'https://github.com/Maxwell-Software-Solutions/Vercel-spine#-code-generation-with-plop');
+    expect(toolsLink).toHaveAttribute('href', 'https://github.com/Maxwell-Software-Solutions/Vercel-spine#-tech-stack');
     expect(toolsLink).toHaveAttribute('target', '_blank');
     expect(toolsLink).toHaveAttribute('rel', 'noopener noreferrer');
   });

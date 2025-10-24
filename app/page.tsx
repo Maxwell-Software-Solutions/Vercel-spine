@@ -63,7 +63,7 @@ export default function Home() {
           <div data-ai-id="feature-card-tools" className="p-6 border rounded-lg">
             <h2 className="text-xl font-semibold mb-2">
               <a 
-                href="https://github.com/Maxwell-Software-Solutions/Vercel-spine#-code-generation-with-plop"
+                href="https://github.com/Maxwell-Software-Solutions/Vercel-spine#-tech-stack"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
