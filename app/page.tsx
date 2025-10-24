@@ -20,7 +20,7 @@ export default function Home() {
             Vercel Spine
           </h1>
         </div>
-        <p data-ai-id="hero-description" className="text-center text-lg mb-4">
+        <p data-ai-id="hero-description" className="text-center text-lg mb-4 gradient-hover">
           Next.js Full-Stack Template with GraphQL, Prisma, and Comprehensive Testing
         </p>
         <div data-ai-id="features-section" className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">

@@ -22,6 +22,18 @@ body {
   color: transparent;
 }
 
+.gradient-hover {
+  transition: background 0.3s ease, -webkit-background-clip 0.3s ease, background-clip 0.3s ease;
+}
+
+.gradient-hover:hover {
+  background: linear-gradient(to right, #4B0082, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
 
 
 @layer base {

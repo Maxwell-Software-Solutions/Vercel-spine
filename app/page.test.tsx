@@ -20,6 +20,12 @@ describe('Home Page', () => {
     expect(screen.getByText(/Next.js Full-Stack Template/i)).toBeInTheDocument();
   });
 
+  it('applies gradient-hover class to the subtitle', () => {
+    render(<Page />);
+    const subtitle = screen.getByText(/Next.js Full-Stack Template/i);
+    expect(subtitle).toHaveClass('gradient-hover');
+  });
+
   it('renders the Features section', () => {
     render(<Page />);
     expect(screen.getByText(/🚀 Features/i)).toBeInTheDocument();
