@@ -28,4 +28,15 @@ test.describe('Home Page', () => {
     expect(loadTime).toBeLessThan(3000);
     await expect(page.locator('body')).toBeVisible();
   });
+
+  test('should display footer with copyright text', async ({ page }) => {
+    await page.goto('/');
+
+    // Check footer is visible
+    const footer = page.locator('footer');
+    await expect(footer).toBeVisible();
+
+    // Check copyright text
+    await expect(footer).toContainText('© 2023 Maxwell Software Solutions MB');
+  });
 });

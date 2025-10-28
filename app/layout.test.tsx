@@ -12,6 +12,7 @@ describe('RootLayout', () => {
     expect(container.querySelector('html')).toBeInTheDocument();
     expect(container.querySelector('body')).toBeInTheDocument();
     expect(container.textContent).toContain('Test Content');
+    expect(container.textContent).toContain('© 2023 Maxwell Software Solutions MB');
   });
 
   it('applies Inter font class to body', () => {
