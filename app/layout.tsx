@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import AiInlineRequest from '@/components/AiInlineRequest';
+import Footer from '@/components/Footer';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -35,9 +36,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const showInlineAI = process.env.NEXT_PUBLIC_INLINE_AI === '1';
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} flex min-h-screen flex-col`}>
+        <div className="flex-1">
+          {children}
+        </div>
+        <Footer />
         {showInlineAI && <AiInlineRequest />}
       </body>
     </html>
